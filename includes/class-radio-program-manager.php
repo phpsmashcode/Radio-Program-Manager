@@ -157,6 +157,17 @@ class Radio_Program_Manager {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		 // Post type registration
+		 $this->loader->add_action( 'init', $plugin_admin, 'register_post_types' );
+        
+		 // Meta boxes
+		 $this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'add_meta_boxes' );
+		 $this->loader->add_action( 'save_post_programs', $plugin_admin, 'save_meta_boxes', 10, 2 );
+ 
+		 // Import functionality
+		 $this->loader->add_action( 'admin_menu', $plugin_admin, 'add_import_program_page' );
+		 $this->loader->add_action( 'admin_post_import_programs', $plugin_admin, 'handle_import_programs' );
+
 	}
 
 	/**
@@ -172,6 +183,13 @@ class Radio_Program_Manager {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+		// Register shortcode
+        //$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
+        
+        // AJAX handlers
+        //$this->loader->add_action( 'wp_ajax_get_weekly_schedule', $plugin_public, 'ajax_get_weekly_schedule' );
+        //$this->loader->add_action( 'wp_ajax_nopriv_get_weekly_schedule', $plugin_public, 'ajax_get_weekly_schedule' );
 
 	}
 

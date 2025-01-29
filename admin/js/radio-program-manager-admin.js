@@ -1,4 +1,4 @@
-(function( $ ) {
+(function ($) {
 	'use strict';
 
 	/**
@@ -27,6 +27,34 @@
 	 * single DOM-ready or window-load handler for a particular page.
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
+	 * 
+	 * 
 	 */
 
-})( jQuery );
+	// Ensure the DOM is ready before initializing Vue
+	$(function () {
+
+		const app = Vue.createApp({
+			data() {
+				return {
+					schedule: schedule,
+					daysOfWeek: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+				};
+			},
+			methods: {
+				addSchedule() {
+					this.schedule.push({
+						day: "",
+						time: ""
+					});
+				},
+				removeSchedule(index) {
+					this.schedule.splice(index, 1);
+				}
+			}
+		});
+
+		app.mount("#broadcast-schedule");
+	});
+
+})(jQuery);
