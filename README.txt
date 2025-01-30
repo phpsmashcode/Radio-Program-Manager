@@ -8,107 +8,64 @@ Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+== Objective ==
+Develop a custom WordPress plugin to manage and display radio program’s schedule, 
+including an import feature for program details via CSV. The schedule should allow unique 
+broadcast times for each day of the week. 
+== Task Description  ==
+You are tasked with creating a custom WordPress plugin. The plugin will allow admins to 
+manage radio programs, set flexible broadcast schedules, import program details from a 
+CSV file, and display the program schedule in a week-view format on the front end with 
+AJAX-based navigation. 
+Requirements 
+== Admin Functionality ==
+    1. Custom Post Type 
+        a. Create a custom post type named Program with the following attributes: 
+            i. Program Name (Text, required) 
+            ii. Program Description (Text Area) 
+            iii. Program Start Date (Date Picker, required) 
+            iv. Program End Date (Date Picker, required) 
+            v. Program Thumbnail (Media Upload) 
+    2. Broadcast Schedule 
+        a. Add a meta box to manage the broadcast schedule for each program: 
+            i. Days of the week with corresponding broadcast times (e.g., Monday: 08:00, Tuesday: 09:00, etc.). 
+            ii. Ensure multiple days with different times can be added for a single program. 
+    3. CSV Import 
+        a. Add a feature to upload and import program details via a CSV file. 
+        b. The CSV file should include the following columns: 
+            i. Program Name
+            ii. Program Description 
+            iii. Program Start Date (Format: YYYY-MM-DD, e.g., 2025-01-01) 
+            iv. Program End Date (Format: YYYY-MM-DD, e.g., 2025-01-31) 
+            v. Program Thumbnail (URL to the image) 
+            vi. Broadcast Schedule (A JSON-like string defining days and times, e.g., {"Mon": "08:00", "Tue": "09:00"}) 
+        c. Validate the data during import: 
+            i. Ensure required fields are present. 
+            ii. Verify the "Broadcast Schedule" field is valid JSON and matches the correct format. 
+            iii. Show meaningful error messages for invalid rows. 
+        d. Ensure imported programs are created or updated in the database. 
 
-== Description ==
+== Frontend Functionality ==
+    1. Shortcode [program_schedule] 
+        a. Display the program schedule in a week-view calendar format. 
+        b. Each day should list programs sorted by their broadcast time, displaying: 
+            i. Program Name 
+            ii. Program Thumbnail 
+            iii. Broadcast Time 
+        c. Only include programs whose broadcast dates (start and end) include the current week. 
+    2. Week Navigation 
+        a. Add buttons for Previous Week and Next Week. 
+        b. Fetch and display data dynamically via AJAX without reloading the page. 
+        Additional Requirements 
+            1. Sanitization and Validation 
+                a. Ensure all data is sanitized before saving it to the database. 
+                b. Validate CSV uploads for correct formatting and required fields. 
+            2. Performance 
+                a. Optimize database queries for efficient data retrieval.
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
-
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
-
-A few notes about the sections above:
-
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
-
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
-
-== Installation ==
-
-This section describes how to install the plugin and get it working.
-
-e.g.
-
-1. Upload `radio-program-manager.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
-
-== Frequently Asked Questions ==
-
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
-
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
-
-== Changelog ==
-
-= 1.0 =
-* A change since the previous version.
-* Another change.
-
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
-
-== Upgrade Notice ==
-
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
-
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+== CSV File Example  ==
+    Columns 
+        • Program Name, Program Description, Program Start Date, Program End Date, Program Thumbnail, Broadcast Schedule 
+    Sample Data 
+        Program Name,Program Description,Program Start Date,Program End Date,Program Thumbnail,Broadcast Schedule 
+        Morning News,Daily news updates,2025-01-01,2025-01-31,https://example.com/image1.jpg,"{""Mon"": ""08:00"", ""Tue"": ""09:00"", ""Wed"": ""10:00""}"
