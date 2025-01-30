@@ -8,17 +8,14 @@ Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-== Objective ==
-Develop a custom WordPress plugin to manage and display radio program’s schedule, 
-including an import feature for program details via CSV. The schedule should allow unique 
-broadcast times for each day of the week. 
-== Task Description  ==
-You are tasked with creating a custom WordPress plugin. The plugin will allow admins to 
-manage radio programs, set flexible broadcast schedules, import program details from a 
-CSV file, and display the program schedule in a week-view format on the front end with 
-AJAX-based navigation. 
-Requirements 
-== Admin Functionality ==
+## Objective
+Develop a custom WordPress plugin to manage and display radio program’s schedule, including an import feature for program details via CSV. The schedule should allow unique broadcast times for each day of the week. 
+## Task Description
+You are tasked with creating a custom WordPress plugin. The plugin will allow admins to manage radio programs, set flexible broadcast schedules, import program details from a CSV file, and display the program schedule in a week-view format on the front end with AJAX-based navigation. 
+
+## Requirements 
+
+### Admin Functionality
     1. Custom Post Type 
         a. Create a custom post type named Program with the following attributes: 
             i. Program Name (Text, required) 
@@ -45,7 +42,7 @@ Requirements
             iii. Show meaningful error messages for invalid rows. 
         d. Ensure imported programs are created or updated in the database. 
 
-== Frontend Functionality ==
+### Frontend Functionality
     1. Shortcode [program_schedule] 
         a. Display the program schedule in a week-view calendar format. 
         b. Each day should list programs sorted by their broadcast time, displaying: 
@@ -63,9 +60,9 @@ Requirements
             2. Performance 
                 a. Optimize database queries for efficient data retrieval.
 
-== CSV File Example  ==
+### CSV File Example
     Columns 
         • Program Name, Program Description, Program Start Date, Program End Date, Program Thumbnail, Broadcast Schedule 
     Sample Data 
-        Program Name,Program Description,Program Start Date,Program End Date,Program Thumbnail,Broadcast Schedule 
+        Program Name,Program Description,Program Start Date,Program End Date,Program Thumbnail,Broadcast Schedule
         Morning News,Daily news updates,2025-01-01,2025-01-31,https://example.com/image1.jpg,"{""Mon"": ""08:00"", ""Tue"": ""09:00"", ""Wed"": ""10:00""}"
