@@ -1,0 +1,5 @@
+Program Name,Program Description,Program Start Date,Program End Date,Program Thumbnail,Broadcast Schedule
+Morning News,Daily news updates,2025-01-01,2025-01-31,https://placehold.co/600x400.png,"{""Mon"": ""08:00"", ""Tue"": ""09:00"", ""Wed"": ""10:00""}"
+Evening News,Daily news updates,2025-02-01,2025-02-10,https://placehold.co/600x400.png,"{""Mon"": ""17:00"", ""Tue"": ""18:00"", ""Wed"": ""18:00""}"
+Songtime,Favorite Songs,2025-01-20,2025-01-31,https://placehold.co/600x400.png,"{""Mon"": ""13:00"", ""Tue"": ""13:00"", ""Wed"": ""13:00"",""Thu"": ""13:00""}"
+Songs,Favorite Songs,2025-01-01,2025-12-31,https://placehold.co/600x400.png,"{""Mon"": ""22:00"", ""Tue"": ""22:00"", ""Sat"": ""22:00"",""Sun"": ""22:00""}"
