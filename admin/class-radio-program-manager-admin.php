@@ -282,70 +282,76 @@ class Radio_Program_Manager_Admin
 
 
 		$status = [];
-		$i = 0;
-		// Iterate through each row
-		foreach ($rows as $row) {
-			// Skip empty rows
-			if (empty($row)) {
-				continue;
-			}
-			$i++;
 
-			$program_details = $this->process_schedule_data($row, $header);
+		$header = [];
+		$row_number = 0;
 
-			$broadcastSchedule = $program_details["Broadcast Schedule"];
+		if (($handle = fopen($file, 'r')) !== false) {
+			while (($row = fgetcsv($handle, 1000, ",")) !== false) {
+				$row_number++;
 
-			// Decode the broadcast schedule JSON string to handle it as an array
-			$schedule = json_decode($broadcastSchedule, true);
+				if ($row_number == 1) {
+					$header = $row; // First row as header
+					continue;
+				}
+
+				$program_details = array_combine($header, $row);
+				
+
+				$broadcastSchedule = $this->process_schedule_data($program_details["Broadcast Schedule"]);
+
+				// Decode the broadcast schedule JSON string to handle it as an array
+				$schedule = json_decode($broadcastSchedule, true);
 
 
-			if (empty($program_details["Program Name"])) {
-				$status[] = ['type' => 'warning', 'message' =>  __('Invalid Program Name in row: ' . $i, 'radio-program-manager')];
-				continue;
-			}
-			if (empty($program_details["Program Description"])) {
-				$status[] = ['type' => 'warning', 'message' =>  __('Invalid Program Description for : ' . $program_details["Program Name"], 'radio-program-manager')];
-				continue;
-			}
-			// Check date format  (Format: YYYY-MM-DD, e.g., 2025-01-01)
-			if (empty($program_details["Program Start Date"]) || $program_details["Program Start Date"] !== date('Y-m-d', strtotime($program_details["Program Start Date"]))) {
+				if (empty($program_details["Program Name"])) {
+					$status[] = ['type' => 'warning', 'message' =>  __('Invalid Program Name in row: ' . $i, 'radio-program-manager')];
+					continue;
+				}
+				if (empty($program_details["Program Description"])) {
+					$status[] = ['type' => 'warning', 'message' =>  __('Invalid Program Description for : ' . $program_details["Program Name"], 'radio-program-manager')];
+					continue;
+				}
+				// Check date format  (Format: YYYY-MM-DD, e.g., 2025-01-01)
+				if (empty($program_details["Program Start Date"]) || $program_details["Program Start Date"] !== date('Y-m-d', strtotime($program_details["Program Start Date"]))) {
 
-				$status[] = ['type' => 'warning', 'message' =>  __('Invalid Program Start Date for : ' . $program_details["Program Name"], 'radio-program-manager')];
-				continue;
-			}
-			if (empty($program_details["Program End Date"]) || $program_details["Program End Date"] !== date('Y-m-d', strtotime($program_details["Program End Date"]))) {
+					$status[] = ['type' => 'warning', 'message' =>  __('Invalid Program Start Date for : ' . $program_details["Program Name"], 'radio-program-manager')];
+					continue;
+				}
+				if (empty($program_details["Program End Date"]) || $program_details["Program End Date"] !== date('Y-m-d', strtotime($program_details["Program End Date"]))) {
 
-				$status[] = ['type' => 'warning', 'message' =>  __('Invalid Program End Date for : ' . $program_details["Program Name"], 'radio-program-manager')];
-				continue;
-			}
+					$status[] = ['type' => 'warning', 'message' =>  __('Invalid Program End Date for : ' . $program_details["Program Name"], 'radio-program-manager')];
+					continue;
+				}
 
-			if (json_last_error() !== JSON_ERROR_NONE) {
-				$status[] = ['type' => 'warning', 'message' =>  __('Invalid Broadcast Schedule for : ' . $program_details["Program Name"], 'radio-program-manager')];
-				continue; // Skip this row if JSON is invalid
-			}
+				if (json_last_error() !== JSON_ERROR_NONE) {
+					$status[] = ['type' => 'warning', 'message' =>  __('Invalid Broadcast Schedule for : ' . $program_details["Program Name"], 'radio-program-manager')];
+					continue; // Skip this row if JSON is invalid
+				}
 
-			// Create program post
-			$post_data = array(
-				'post_title'    => wp_strip_all_tags($program_details['Program Name']),
-				'post_content'  => wp_kses_post($program_details['Program Description'] ?? ''),
-				'post_status'   => 'publish',
-				'post_type'     => 'programs'
-			);
+				// Create program post
+				$post_data = array(
+					'post_title'    => wp_strip_all_tags($program_details['Program Name']),
+					'post_content'  => wp_kses_post($program_details['Program Description'] ?? ''),
+					'post_status'   => 'publish',
+					'post_type'     => 'programs'
+				);
 
-			// Insert the post
-			$post_id = wp_insert_post($post_data, true);
+				// Insert the post
+				$post_id = wp_insert_post($post_data, true);
 
-			// Save program dates
-			update_post_meta($post_id, '_program_start_date', sanitize_text_field($program_details['Program Start Date']));
-			update_post_meta($post_id, '_program_end_date', sanitize_text_field($program_details['Program End Date']));
+				// Save program dates
+				update_post_meta($post_id, '_program_start_date', sanitize_text_field($program_details['Program Start Date']));
+				update_post_meta($post_id, '_program_end_date', sanitize_text_field($program_details['Program End Date']));
 
-			// Handle thumbnail if URL is provided
-			if (!empty($program_details['Program Thumbnail'])) {
-				$this->set_featured_image_from_url($post_id, $program_details['Program Thumbnail']);
-			}
+				// Handle thumbnail if URL is provided
+				if (!empty($program_details['Program Thumbnail'])) {
+					$this->set_featured_image_from_url($post_id, $program_details['Program Thumbnail']);
+				}
 
-			if (isset($broadcastSchedule)) {
-				update_post_meta($post_id, '_broadcast_schedule', sanitize_text_field($broadcastSchedule));
+				if (isset($broadcastSchedule)) {
+					update_post_meta($post_id, '_broadcast_schedule', sanitize_text_field($broadcastSchedule));
+				}
 			}
 		}
 		$status[] = ['type' => 'success', 'message' => __('Programs imported successfully.', 'radio-program-manager')];
@@ -361,12 +367,9 @@ class Radio_Program_Manager_Admin
 	/*
 	 * Helper function to process schedule data
 	 * */
-	private function process_schedule_data($row, $header): array
+	private function process_schedule_data($row)
 	{
-		$_data = explode('{', $row);
-		$program_details = explode(',', $_data[0]);
-
-		$scheduleArray = json_decode("{" . $_data[1], true);
+		$scheduleArray = json_decode($row, true);
 		$newSchedule = [];
 		// Check if JSON decoding was successful
 		if (json_last_error() === JSON_ERROR_NONE) {
@@ -379,65 +382,61 @@ class Radio_Program_Manager_Admin
 					"time" => $time
 				];
 			}
-
 			// Encode the new format back to JSON
-			$newSchedule = json_encode($newSchedule);
+			return json_encode($newSchedule);
 		}
-		$program_details[5] = $newSchedule;
-
-		return array_combine($header, $program_details);
 	}
 	/**
 	 * Helper function to set featured image from URL
 	 */
-	private function set_featured_image_from_url($post_id, $image_url) {
+	private function set_featured_image_from_url($post_id, $image_url)
+	{
 		// Get WordPress upload directory
 		$upload_dir = wp_upload_dir();
-	
+
 		// Get image data
 		$image_data = file_get_contents($image_url);
 		if ($image_data === false) {
 			return false; // Image download failed
 		}
-	
-		$filename = wp_unique_filename($upload_dir['path'], basename($image_url));	
+
+		$filename = wp_unique_filename($upload_dir['path'], basename($image_url));
 		$file_path = trailingslashit($upload_dir['path']) . $filename;
-	
+
 		if (file_put_contents($file_path, $image_data) === false) {
 			return false; // Failed to save file
 		}
-		
+
 		$wp_filetype = wp_check_filetype($filename, null);
 		if (!$wp_filetype['type']) {
 			return false; // Invalid file type
 		}
-	
+
 		$attachment = array(
 			'post_mime_type' => $wp_filetype['type'],
 			'post_title'     => sanitize_file_name($filename),
 			'post_content'   => '',
 			'post_status'    => 'inherit'
 		);
-	
+
 		// Insert attachment into the media library
 		$attach_id = wp_insert_attachment($attachment, $file_path, $post_id);
 		if (is_wp_error($attach_id) || !$attach_id) {
 			return false; // Attachment insertion failed
 		}
-	
+
 		// Include image.php for metadata functions
 		require_once ABSPATH . 'wp-admin/includes/image.php';
-	
+
 		// Generate attachment metadata
 		$attach_data = wp_generate_attachment_metadata($attach_id, $file_path);
 		wp_update_attachment_metadata($attach_id, $attach_data);
-	
+
 		// Set the image as the featured image (post thumbnail)
 		if (!set_post_thumbnail($post_id, $attach_id)) {
 			return false; // Failed to set featured image
 		}
-	
+
 		return true;
 	}
-	
 }
