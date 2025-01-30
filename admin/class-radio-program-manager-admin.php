@@ -294,6 +294,10 @@ class Radio_Program_Manager_Admin
 					$header = $row; // First row as header
 					continue;
 				}
+				if (count($row) !== count($header)) {
+					$status[] = ['type' => 'error', 'message' => __('CSV format mismatch in row: ' . $row_number, 'radio-program-manager')];
+					continue;
+				}
 
 				$program_details = array_combine($header, $row);
 				
@@ -305,7 +309,7 @@ class Radio_Program_Manager_Admin
 
 
 				if (empty($program_details["Program Name"])) {
-					$status[] = ['type' => 'warning', 'message' =>  __('Invalid Program Name in row: ' . $i, 'radio-program-manager')];
+					$status[] = ['type' => 'warning', 'message' =>  __('Invalid Program Name in row: ' . $row_number, 'radio-program-manager')];
 					continue;
 				}
 				if (empty($program_details["Program Description"])) {

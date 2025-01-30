@@ -18,7 +18,7 @@
  * Description:       Custom WordPress plugin to manage and display radio program’s schedule, including an import feature for program details via CSV. The schedule should allow unique broadcast times for each day of the week.
  * Version:           1.0.0
  * Author:            Hariprasad Vijayan
- * Author URI:        https://dev-appstation.pantheonsite.io//
+ * Author URI:        https://dev-appstation.pantheonsite.io/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       radio-program-manager

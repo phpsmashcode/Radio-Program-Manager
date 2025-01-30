@@ -10,7 +10,7 @@
             <li><?php _e('iii. Program Start Date (Format: YYYY-MM-DD, e.g., 2025-01-01)', 'radio-program-manager'); ?></li>
             <li><?php _e('iv. Program End Date (Format: YYYY-MM-DD, e.g., 2025-01-31)', 'radio-program-manager'); ?></li>
             <li><?php _e('v. Program Thumbnail (URL to the image)', 'radio-program-manager'); ?></li>
-            <li><?php _e('vi. Broadcast Schedule (A JSON-like string defining days and times, e.g., {"Mon": "08:00", "Tue": "09:00"}', 'radio-program-manager'); ?></li>
+            <li><?php _e('vi. Broadcast Schedule (A JSON-like string defining days and times, e.g., "{""Mon"": ""08:00"", ""Tue"": ""09:00""}"', 'radio-program-manager'); ?></li>
         </ul>
     </div>
 
