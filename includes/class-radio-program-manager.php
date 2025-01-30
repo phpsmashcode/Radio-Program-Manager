@@ -185,11 +185,11 @@ class Radio_Program_Manager {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		// Register shortcode
-        //$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
+        $this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
         
         // AJAX handlers
-        //$this->loader->add_action( 'wp_ajax_get_weekly_schedule', $plugin_public, 'ajax_get_weekly_schedule' );
-        //$this->loader->add_action( 'wp_ajax_nopriv_get_weekly_schedule', $plugin_public, 'ajax_get_weekly_schedule' );
+        $this->loader->add_action( 'wp_ajax_get_weekly_schedule', $plugin_public, 'ajax_get_weekly_schedule' );
+        $this->loader->add_action( 'wp_ajax_nopriv_get_weekly_schedule', $plugin_public, 'ajax_get_weekly_schedule' );
 
 	}
 
