@@ -8,6 +8,11 @@ Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+
+[Demo](https://dev-appstation.pantheonsite.io/weekly-programs/)
+[Sample CSV](https://raw.githubusercontent.com/phpsmashcode/Radio-Program-Manager/refs/heads/main/sample-csv.csv)
+
+
 ## Objective
 Develop a custom WordPress plugin to manage and display radio program’s schedule, including an import feature for program details via CSV. The schedule should allow unique broadcast times for each day of the week. 
 ## Task Description
