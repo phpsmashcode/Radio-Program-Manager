@@ -134,11 +134,6 @@ class Radio_Program_Manager_Public
 
 	public function ajax_get_weekly_schedule()
 	{
-		if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'program_schedule_nonce')) {
-			wp_send_json_error(['message' => 'Nonce verification failed'], 400);
-			return;
-		}
-
 		$week_offset = isset($_POST['week_offset']) ? intval($_POST['week_offset']) : 0;
 
 		if ($week_offset >= 0) {
